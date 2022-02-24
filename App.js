@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 22,
     color: '#fff',
   }
 })
