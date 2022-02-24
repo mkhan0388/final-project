@@ -14,7 +14,7 @@ export default function App() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [lastPhotoURI, setLastPhotoURI] = useState(null);
   const cameraRef = useRef(null);
-  const [data, setData] = useState([{}])
+  const [data, setData] = useState([])
 
   useEffect(() => {
       (async () => {
@@ -52,8 +52,10 @@ export default function App() {
  }
 
  let shareImage =  () => {
-
- alert(setData)
+  test().then((res) => {
+    alert(res)
+  })
+ 
 }; 
 
  if (selectedImage !== null) {
@@ -65,7 +67,7 @@ export default function App() {
         style={styles.thumbnail}
       />
               <TouchableOpacity onPress={shareImage} style={styles.deleteButton}>
-          <Text style={styles.buttonText}>Return</Text>
+          <Text style={styles.buttonText}>Upload</Text>
         </TouchableOpacity>
         
     </View>
