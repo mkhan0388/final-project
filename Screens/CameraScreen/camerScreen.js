@@ -4,7 +4,7 @@ import { Button, ImageBackground, Text, TouchableOpacity, View, StyleSheet, Imag
 import * as Sharing from 'expo-sharing'; 
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import { test } from "./api";
+import { test } from "../../api";
 
 const CameraScreen = () => {
     const [hasCameraPermission, setHasCameraPermission] = useState(null)
