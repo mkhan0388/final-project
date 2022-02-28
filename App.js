@@ -3,6 +3,7 @@ import { Button, ImageBackground, Text, TouchableOpacity, View, StyleSheet, Imag
 import Navigation from "./Navigation/index";
 
 import CameraScreen from "./Screens/CameraScreen/camerScreen";
+import IndividualBird from "./Screens/IndividualBirdScreen/individualBird";
 import UserLogin from "./Screens/SignInScreen/userLogin";
 import SignUp from "./Screens/SignUpScreen /signUp";
 
@@ -11,9 +12,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <SignUp />
+      {/* <SignUp /> */}
       {/* <UserLogin /> */}
       {/* <Navigation /> */}
+      {/* <IndividualBird /> */}
+      <CameraScreen></CameraScreen>
     </View>
   );
 }
@@ -21,10 +24,8 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    // width: 100,
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+ 
+    flex:1,
+
   },
 });

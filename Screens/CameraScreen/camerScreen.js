@@ -1,10 +1,11 @@
 import { Camera } from "expo-camera";
 import { useRef, useState, useEffect } from "react";
-import { Button, ImageBackground, Text, TouchableOpacity, View, StyleSheet, Image} from "react-native";
+import { Button, ImageBackground, Text, TouchableOpacity, View, StyleSheet, Image, Pressable} from "react-native";
 import * as Sharing from 'expo-sharing'; 
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { test } from "../../api";
+import CustomButton from "../../Components/customButton/customButton";
 
 const CameraScreen = () => {
     const [hasCameraPermission, setHasCameraPermission] = useState(null)
@@ -27,9 +28,6 @@ const CameraScreen = () => {
           const locationStatus = await Location.requestForegroundPermissionsAsync();
           setLocationPermission(locationStatus.status === 'granted')
         })();
-  
-        
-      
     }, [])
     
   
@@ -51,12 +49,25 @@ const CameraScreen = () => {
       setSelectedImage({ localUri: pickerResult.uri })
    }
   
-   let shareImage =  () => {
-    test().then((res) => {
-      alert(res)
-    })
+   let shareImage = async () => {
+    if (Platform.OS === 'web') {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+  
+    await Sharing.shareAsync(selectedImage.localUri);
    
   }; 
+
+  const uploadImage = () => {
+    console.warn('Upload to server')
+
+    return (
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+        <Text style={styles.buttonText}>Loading screen</Text>
+      </View>
+    )
+  }
   
    if (selectedImage !== null) {
     return (
@@ -67,7 +78,10 @@ const CameraScreen = () => {
           style={styles.thumbnail}
         />
                 <TouchableOpacity onPress={shareImage} style={styles.deleteButton}>
-            <Text style={styles.buttonText}>Upload</Text>
+            <Text style={styles.buttonText}>Share</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {setSelectedImage(null);}} style={styles.deleteButton}>
+            <Text style={styles.buttonText}>Back</Text>
           </TouchableOpacity>
           
       </View>
@@ -82,8 +96,18 @@ const CameraScreen = () => {
         <TouchableOpacity
           style={styles.deleteButton}
           onPress={() => {setLastPhotoURI(null);}}>
-          <Text style={{ fontSize: 30, padding: 10, color: "white" }}>❌</Text>
+          <Text style={{ fontSize: 15, padding: 10, color: "white" }}>Retake</Text>
         </TouchableOpacity>
+
+        <Pressable style={styles.deleteButton} text={"Sign In"} onPress={uploadImage} >
+        <Text style={{ fontSize: 15, padding: 10, color: "white" }}>Submit</Text>
+        </Pressable>
+          {/* <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => {uploadImage}}>
+
+          <Text style={{ fontSize: 15, padding: 10, color: "white" }}>Submit</Text>
+        </TouchableOpacity> */}
       </ImageBackground>
     );
   }
@@ -92,11 +116,12 @@ const CameraScreen = () => {
     <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
       <View
         style={styles.camera}>
+
         <TouchableOpacity
           style={styles.galleryImage}
           onPress={chooseImage}
         >
-          <Text style={{ fontSize: 30, padding: 10, color: "white" }}>Gal</Text>
+          <Text style={{ fontSize: 15, padding: 10, color: "white" }}>Gal</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.imageCapture}
@@ -105,7 +130,7 @@ const CameraScreen = () => {
               let photo = await cameraRef.current.takePictureAsync();
               setLastPhotoURI(photo.uri);}
               }}>
-          <Text style={{ fontSize: 30, padding: 10, color: "white" }}>📸</Text>
+          <Text style={{ fontSize: 20, padding: 10, color: "white" }}>📸</Text>
         </TouchableOpacity>
       </View>
     </Camera>
@@ -129,6 +154,7 @@ const styles = StyleSheet.create({
       backgroundColor: "transparent",
       flexDirection: "row",
       justifyContent: "center",
+      
     },
     deleteButton: {
       flex: 0.2,
